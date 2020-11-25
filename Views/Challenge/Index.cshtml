@@ -1,0 +1,101 @@
+﻿@model Quizzish.ViewModels.ChallengesViewModel
+
+@{
+    ViewBag.Title = "Quizzish - Challenges";
+}
+
+<table class="table text-white directionChange">
+
+
+    <thead>
+        <tr>
+            <th colspan="3"><h4 class="text-secondary text-uppercase mb-2 text-center">Open Challenges</h4></th>
+        </tr>
+        @if (Model.AnyOpenChallenges)
+        {
+            <tr class="text-uppercase">
+                <th scope="col" class="tdOffset">Player</th>
+                <th scope="col" class="categoryChallenge">Category</th>
+                <th scope="col" class=""></th>
+            </tr>
+        }
+    </thead>
+
+    @if (Model.AnyOpenChallenges)
+    {
+        <tbody>
+            @foreach (var challenge in Model.OpenChallenges)
+            {
+                var opponent = Model.FindOpponent(challenge);
+                var didOppFinish = Model.DidOpponentFinish(challenge, opponent);
+                var didCurUserStart = Model.DidCurrentUserPlayBefore(challenge, opponent);
+                var didCurUserFinish = Model.DidCurrentUserFinish(challenge, opponent);
+
+                <tr>
+                    <td scope="col" class="tdOffset">
+                        <a asp-controller="Players" asp-action="Player" asp-route-id="@opponent.Id" class="btn btn-secondary ">@opponent.UserName</a>
+                    </td>
+                    <td scope="col" class="categoryChallenge">@Html.DisplayFor(e => challenge.Category)</td>
+                    <td scope="col" class="">
+                        <a asp-controller="Challenge" asp-action="Play" asp-route-id="@challenge.Id" 
+                           class="btn btn-secondary ">@(didCurUserStart ? "Play" : !didCurUserFinish ? "Continue" : "Waiting")</a>
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    }
+    else
+    {
+        <tbody>
+            <tr>
+                <th colspan="3" class="text-center">Currently No Open Challenges</th>
+            </tr>
+        </tbody>
+    }
+
+</table>
+
+<div class="seperate"></div>
+<div class="seperate"></div>
+<div class="seperate"></div>
+
+<table class="table text-white directionChange">
+    <thead>
+        <tr>
+            <th colspan="3"><h4 class="text-secondary text-uppercase mb-2 text-center">Closed Challenges</h4></th>
+        </tr>
+        <tr class="text-uppercase">
+            <th scope="col" class="tdOffset">Player</th>
+            <th scope="col" class="">Category</th>
+            <th scope="col" class="">Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var challenge in Model.ClosedChallenges)
+        {
+            var winner = Model.FindWinner(challenge);
+            var opponent = Model.FindOpponent(challenge);
+
+            <tr>
+                <td scope="col" class="tdOffset">
+                    <a asp-controller="Players" asp-action="Player" asp-route-id="@opponent.Id" class="btn btn-secondary">
+                        @opponent.UserName
+                    </a>
+                </td>
+                <td scope="col" class="">
+                    <div class="tdHelper">
+                        @Html.DisplayFor(e => challenge.Category)
+                    </div>
+                </td>
+
+                <td scope="col" class="">
+                    <a asp-controller="Challenge" asp-action="results" asp-route-id="@challenge.Id" class="btn btn-secondary">
+                        @(winner == null ? "Tie" : winner.UserName == opponent.UserName ? "Lose" : "Win")
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

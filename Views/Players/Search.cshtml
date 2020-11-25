@@ -1,0 +1,31 @@
+﻿@model List<Quizzish.DTO_s.PlayerOutputDto>
+
+@{
+    ViewBag.Title = "Quizzish - Search Player";
+}
+
+<table class="table text-white directionChange">
+    <thead>
+        <tr>
+            <th colspan="3">
+                <h4 class="text-secondary text-uppercase mb-2 text-center">Player(s) that match your search</h4>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var player in Model)
+        {
+            <tr>
+                <td scope="col" class="tdOffset">@player.UserName</td>
+                <td scope="col">@player.PlayerSections.Count() Games Played</td>
+                <td scope="col">
+                    <a asp-controller="players" asp-action="player" asp-route-id="@player.Id" class="btn btn-secondary ml-2">
+                        Visit
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

@@ -1,0 +1,35 @@
+﻿@model Quizzish.ViewModels.CreateChallengeViewModel
+
+@{
+    ViewBag.Title = "Quizzish - Create Challenge";
+}
+
+<form method="post" asp-controller="Challenge" asp-action="Create" asp-route-id="@Model.OpponentId">
+
+    <h4 class="text-white text-uppercase mb-2">Select A Category</h4>
+    <div class="form-group">
+        <select class="custom-select" asp-for="@Model.Challenge.Category" asp-items="Html.GetEnumSelectList<Category>()"></select>
+    </div>
+    <div class="invalid-feedback" style="display:block;">
+        <span asp-validation-for="@Model.Challenge.Category"></span>
+    </div>
+
+    <div class="seperate"></div>
+    <div class="seperate"></div>
+    <div class="seperate"></div>
+
+    <h4 class="text-white text-uppercase mb-2">Select A Difficulty</h4>
+    <div class="form-group">
+        <select class="custom-select" asp-for="@Model.Challenge.Difficulty">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+        <div class="invalid-feedback" style="display:block;">
+            <span asp-validation-for="@Model.Challenge.Difficulty"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-secondary">Start</button>
+
+</form>

@@ -1,0 +1,27 @@
+﻿@model Quizzish.ViewModels.LoginViewModel
+
+@{
+    ViewBag.Title = "Quizzish - Log In";
+}
+<form class="mb-4" asp-controller="Home" asp-action="Index" method="post">
+    <h4 class="text-white text-uppercase mb-2">Username</h4>
+    <div class="form-group">
+        <input class="input-group-text" type="text" asp-for="@Model.Username" value="" />
+        <div class="invalid-feedback text-secondary" style="display:block;">
+            <span asp-validation-for="@Model.Username"></span>
+        </div>
+    </div>
+    <h4 class="text-white text-uppercase mb-2">Password</h4>
+    <div class="form-group">
+        <input class="input-group-text" type="password" asp-for="@Model.Password" value="" />
+        <div class="invalid-feedback text-secondary" style="display:block;">
+            <span asp-validation-for="@Model.Password"></span>
+        </div>
+    </div>
+    <button class="btn btn-secondary" type="submit">Log In</button>
+</form>
+
+<div class="seperate"></div>
+
+<h6 class="text-white text-uppercase mb-2">I don't have an account yet</h6>
+<a class="btn btn-secondary" asp-controller="User" asp-action="Register">Register</a>

@@ -1,0 +1,64 @@
+﻿@model Quizzish.ViewModels.PlayChallengeViewModel
+
+@{
+    ViewBag.Title = "Quizzish - Play";
+}
+
+<h4 class="color-white text-secondary mb-2 " id="timer">15</h4>
+
+<h4 class="color-white text-uppercase mb-2">@Model.Question.Text</h4>
+<div class="seperate"></div>
+@foreach (var item in Model.Question.Answers.Where(x => x.Text != "DummyAnswer"))
+{
+    <div class="mb-1">
+        <form method="post" asp-controller="challenge" asp-action="answer">
+            <div class="form-group">
+                <input style="display:none" name="answerId" value=@item.Id />
+                <input style="display:none" name="challengeId" value=@Model.ChallengeId />
+                <button type="submit" class="btn btn-secondary btn-lg bigWidth pr-5 answers">@item.Text</button>
+            </div>
+
+        </form>
+    </div>
+}
+
+<form style="display:none" method="post" asp-controller="challenge" asp-action="answer">
+    <div class="form-group">
+        <input name="answerId" value="@Model.Question.Answers.FirstOrDefault(x => x.Text == "DummyAnswer").Id" />
+        <input name="challengeId" value=@Model.ChallengeId />
+        <button type="submit" class="btn btn-secondary btn-lg bigWidth pr-5 answers" id="timeOutAnswer" />
+    </div>
+
+</form>
+
+@section scripts {
+    <script>
+        const answers = document.getElementsByClassName("answers");
+
+        var x = setInterval(function () {
+            let el = document.getElementById("timer");
+            el.textContent = parseInt(el.textContent) - 1;
+
+            if (el.textContent === "0") {
+                document.getElementById("timeOutAnswer").click();
+                clearInterval(x);
+            }
+        }, 1000);
+
+        Array.from(answers).forEach(answer => {
+            answer.addEventListener("click", e => {
+                clearInterval(x);
+                Array.from(answers).forEach(el => {
+                    el.style.pointerEvents = "none";
+                    el.style.opacity = 0.5;
+                })
+
+            }
+            )
+        });
+
+
+
+
+    </script>
+}

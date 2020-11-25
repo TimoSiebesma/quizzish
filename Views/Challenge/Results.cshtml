@@ -1,0 +1,129 @@
+﻿@model Quizzish.ViewModels.ResultsViewModel
+
+@{
+    var gameOver = Model.IsGameOver;
+    var finishedPlayerSection = Model.PlayerSections.FirstOrDefault(ps => ps.Counter >= 10);
+    ViewBag.Title = "Quizzish - Challenge Results";
+}
+<h2 class="text-white text-uppercase mb-2">Scores</h2>
+<div class="seperate"></div>
+
+@if (gameOver)
+{
+    <table class="table text-white directionChange">
+        <thead>
+            <tr>
+                <td scope="col" class="tdOffset numbering"><h4 class="text-secondary text-uppercase mb-2">@Model.PlayerSections.FirstOrDefault().Player.UserName</h4></td>
+                <td scope="col" class="tdOffset "><h4 class="text-secondary text-uppercase mb-2">@Model.PlayerSections.LastOrDefault().Player.UserName</h4></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td scope="col" class="tdOffset numbering">@Model.PlayerSections.FirstOrDefault().Points / 10</td>
+                <td scope="col" class="tdOffset">@Model.PlayerSections.LastOrDefault().Points / 10</td>
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
+    <table class="table text-white directionChange">
+        <thead>
+            <tr>
+                <td scope="col" class="tdOffset numbering"><h4 class="text-secondary text-uppercase mb-2"> @finishedPlayerSection.Player.UserName</h4></td>
+                <td scope="col" class="tdOffset "><h4 class="text-secondary text-uppercase mb-2">@Model.PlayerSections.FirstOrDefault(ps => ps != finishedPlayerSection).Player.UserName</h4></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td scope="col" class="tdOffset numbering">@finishedPlayerSection.Points / 10</td>
+                <td scope="col" class="tdOffset">Waiting  </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+}
+<div class="seperate"></div>
+<div class="seperate"></div>
+<div class="seperate"></div>
+
+@foreach (var question in Model.Questions)
+{
+
+    <table class="table text-white ">
+        <thead>
+            <tr>
+                <td colspan="3">
+                    <h4 class="text-secondary text-uppercase mb-2">@question.Text</h4>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                byte index = 1;
+            }
+
+            @foreach (var answer in question.Answers.Where(x => x.Text != "DummyAnswer"))
+            {
+                <tr>
+                    @{
+                        var style = "white";
+
+                        if (answer.Result)
+                        {
+                            style = "secondary font-weight-bold";
+                        }
+
+                    }
+
+                    <td scope="col" class="numbering smallTd text-@(style)">
+                        @(index++)
+                    </td>
+
+
+
+                    <td scope="col" class="tdSmallOffset  text-@(style)">
+                        @answer.Text
+                    </td>
+                    <td scope="col">
+                        @{
+                            var names = new List<string>();
+
+                            if (Model.Answers.FirstOrDefault().Contains(answer.Id))
+                            {
+                                names.Add(Model.PlayerSections.FirstOrDefault().Player.UserName);
+                            }
+                            if (Model.Answers.LastOrDefault().Contains(answer.Id))
+                            {
+                                names.Add(Model.PlayerSections.LastOrDefault().Player.UserName);
+                            }
+                        }
+
+                        @foreach (var name in names)
+                        {
+                            <div class="text-@(style)">
+                                @name
+                            </div>
+                        }
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+    <div class="seperate"></div>
+    <div class="seperate"></div>
+    <div class="seperate"></div>
+}
+
+
+
+
+
+
+
+

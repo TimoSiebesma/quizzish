@@ -1,0 +1,44 @@
+﻿@model List<Quizzish.ViewModels.HomeViewModel>
+
+@{
+    ViewBag.Title = "Quizzish - Players";
+}
+
+<h4 class="text-secondary text-uppercase mb-2">Search for friends</h4>
+<form asp-controller="players" asp-action="search" method="get" class="d-flex w-auto">
+    <input class="form-control input-group" type="text" id="username" name="username" />
+    <button class="btn btn-secondary ml-2" type="submit">Search</button>
+</form>
+
+<div class="seperate"></div>
+<div class="seperate"></div>
+<div class="seperate"></div>
+
+<h4 class="text-secondary text-uppercase mb-2">Check out our most active players</h4>
+<table class="table text-white directionChange" id="TopPlayers">
+    <thead>
+        <tr class="text-uppercase">
+            <th scope="col" class="tdOffset">Name</th>
+            <th scope="col" class="">Score</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var score in Model)
+        {
+            <tr class="mx-auto">
+                <td scope="col" class="tdOffset">@score.Player.UserName</td>
+                <td scope="col" class="">@score.TotalScore</td>
+                <td scope="col" class="">
+                    <a asp-controller="players" asp-action="player" asp-route-id="@score.Player.Id" class="btn btn-secondary ml-2">
+                        Visit
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="seperate"></div>
+
+
+

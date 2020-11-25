@@ -1,0 +1,67 @@
+﻿@model Quizzish.ViewModels.HighscoresViewModel
+
+@{
+    ViewBag.Title = "Quizzish - Highscores";
+}
+
+<table class="table text-white directionChange" id="TopPlayers">
+    <thead>
+        <tr class="text-uppercase">
+            <th colspan="4" class="text-center "><h4 class="text-secondary text-uppercase mb-2 text-center">Top Players</h4></th>
+        </tr>
+    </thead>
+    @{
+        byte index = 1;
+    }
+    <tbody>
+        @foreach (var score in Model.MainScores)
+        {
+            <tr>
+                <td scope="col" class="numbering smallTd">@(index++)</td>
+                <td scope="col" class="tdOffset">
+                    @score.Player.UserName
+                </td>
+                <td scope="col">@score.TotalScore</td>
+                <td><a asp-controller="Players" asp-action="Player" asp-route-id="@score.Player.Id" class="btn btn-secondary ">Visit</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr class="text-white" />
+
+
+@foreach (var category in Model.CategoryScores)
+{
+    <div class="seperate"></div>
+    <table class="table text-white directionChange">
+        <thead>
+            <tr class="text-uppercase">
+                <th colspan="4" class="text-center ">
+                    <h4 class="text-secondary text-uppercase mb-2 text-center">
+                        @Html.DisplayFor(e => category.FirstOrDefault().Category)
+                    </h4>
+                </th>
+            </tr>
+        </thead>
+        @{
+            index = 1;
+        }
+
+        <tbody>
+
+            @foreach (var score in category)
+            {
+                <tr>
+                    <td scope="col" class="numbering smallTd">@(index++)</td>
+
+                    <td scope="col" class="tdOffset">
+                        @score.Player.UserName
+                    </td>
+                    <td scope="col">@score.Amount</td>
+                    <td><a asp-controller="Players" asp-action="Player" asp-route-id="@score.Player.Id" class="btn btn-secondary ">Visit</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}

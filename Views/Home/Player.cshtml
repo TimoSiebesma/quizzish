@@ -1,0 +1,60 @@
+﻿@model Quizzish.ViewModels.HomeViewModel
+
+@{
+    ViewBag.Title = "Quizzish - Home";
+}
+
+<table class="table text-white">
+    <thead>
+        <tr>
+            <th colspan="3">
+                <h4 class="text-secondary text-uppercase mb-2 text-center">Player Information</h4>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="col" class="text-right pr-3 numbering text-uppercase">Name</th>
+            <td scope="col" class="text-left">@Model.Player.UserName</td>
+        </tr>
+        <tr>
+            <th scope="col" class="text-right pr-3 numbering text-uppercase">Points</th>
+            <td scope="col" class="text-left">@Model.TotalScore</td>
+        </tr>
+        @if (Model.HasPlayedGames)
+        {
+            <tr>
+                <th scope="col" class="text-right pr-3 numbering text-uppercase">Best Category</th>
+                <td scope="col" class="text-left">@Html.DisplayFor(e => Model.BestCategory.Category)</td>
+            </tr>
+        }
+        <tr>
+            <th scope="col" class="text-right pr-3 numbering text-uppercase">Games Played</th>
+            <td scope="col" class="text-left">@Model.PlayedGames</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="seperate"></div>
+<div class="seperate"></div>
+<div class="seperate"></div>
+
+<table class="table text-white">
+    <thead>
+        <tr>
+            <th colspan="2">
+                <h4 class="text-secondary text-uppercase mb-2 text-center">Player Scores</h4>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var score in Model.PlayedScores)
+        {
+            <tr>
+                <th class="text-right pr-3 numbering text-uppercase" scope="col">@Html.DisplayFor(e => score.Category)</th>
+                <td scope="col" class="text-left">@score.Amount</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
